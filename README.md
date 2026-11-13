@@ -35,6 +35,42 @@ To see how closely each service matches AWS, check the fidelity scores published
 
 Individual gaps are tracked in the repository's `issues/` directory. APIs and behaviors that don't work yet are under `issues/things-that-do-not-work/`, and ones that have since been fixed move to `issues/things-that-now-work/`.
 
+## Prebuilt binary (Linux aarch64)
+
+A standalone binary for Linux on ARM64 (AWS Graviton) is available on the [releases page](https://github.com/lep511/aws-emulator/releases/tag/v0.1.0). It was built and tested on Amazon Linux 2023. It is dynamically linked against glibc, so it needs a glibc-based distribution and does not run on x86_64 or on musl-based systems such as Alpine.
+
+### Download
+
+```bash
+curl -L -O https://github.com/lep511/aws-emulator/releases/download/v0.1.0/aws-emulator-aarch64-linux
+chmod +x aws-emulator-aarch64-linux
+```
+
+The file is about 870 MB.
+
+### Verify the download
+
+```bash
+echo "551333be7fc1ace8ecff94bbf315d56104407f08cdf6ef5bcddfc0ef4055c5f1  aws-emulator-aarch64-linux" | sha256sum -c -
+```
+
+### Run
+
+```bash
+./aws-emulator-aarch64-linux --help
+./aws-emulator-aarch64-linux --port 9297 --telemetry off
+```
+
+Check that it is running:
+
+```bash
+curl -i http://127.0.0.1:9297/__admin/health
+```
+
+A `200` response means the emulator is working. The binary is stripped, so panic backtraces show addresses instead of function names.
+
+Telemetry is on by default. To turn it off, see [Telemetry](#telemetry).
+
 ## Building from source
 
 You need this if you are modifying the emulator, running it from a checkout, or using embedded mode. Embedded mode compiles the emulator into your test binary, so the prerequisites and build-cost guidance below apply to it too. Most other users install a prebuilt package instead (see [Quick start](#quick-start)). Building from source is supported on **Linux (x86_64 and aarch64)**; on Windows and macOS, use the Docker path above.
