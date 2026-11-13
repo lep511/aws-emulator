@@ -41,24 +41,51 @@ A standalone binary for Linux on ARM64 (AWS Graviton) is available on the [relea
 
 ### Download
 
+Pick the binary that matches your CPU architecture (`uname -m` prints `aarch64` or `x86_64`).
+
+**Linux aarch64 (AWS Graviton, other ARM64 servers):**
+
 ```bash
 curl -L -O https://github.com/lep511/aws-emulator/releases/download/v0.1.0/aws-emulator-aarch64-linux
 chmod +x aws-emulator-aarch64-linux
 ```
 
-The file is about 870 MB.
+**Linux x86_64 (Intel/AMD):**
+
+```bash
+curl -L -O https://github.com/lep511/aws-emulator/releases/download/v0.1.0/aws-emulator-x86_64-linux
+chmod +x aws-emulator-x86_64-linux
+```
+
+The aarch64 file is about 870 MB and the x86_64 file is about 951 MB. The x86_64 binary requires glibc 2.17 or newer, so it runs on Amazon Linux 2 and 2023, Ubuntu 18.04+, Debian 9+ and RHEL 7+.
 
 ### Verify the download
+
+**aarch64:**
 
 ```bash
 echo "551333be7fc1ace8ecff94bbf315d56104407f08cdf6ef5bcddfc0ef4055c5f1  aws-emulator-aarch64-linux" | sha256sum -c -
 ```
 
-### Run
+**x86_64:**
 
 ```bash
-./aws-emulator-aarch64-linux --help
-./aws-emulator-aarch64-linux --port 9297 --telemetry off
+echo "9943b529980dcc2f52b256c7bd63590d0083e7b6c8481af576538084c9904506  aws-emulator-x86_64-linux" | sha256sum -c -
+```
+
+### Run
+
+Replace `<binary>` with the file you downloaded (`aws-emulator-aarch64-linux` or `aws-emulator-x86_64-linux`).
+
+```bash
+./<binary> --help
+./<binary> --port 9297 --telemetry off
+```
+
+For example, on x86_64:
+
+```bash
+./aws-emulator-x86_64-linux --port 9297 --telemetry off
 ```
 
 Check that it is running:
@@ -67,7 +94,7 @@ Check that it is running:
 curl -i http://127.0.0.1:9297/__admin/health
 ```
 
-A `200` response means the emulator is working. The binary is stripped, so panic backtraces show addresses instead of function names.
+A `200` response means the emulator is working. The binaries are stripped, so panic backtraces show addresses instead of function names.
 
 Telemetry is on by default. To turn it off, see [Telemetry](#telemetry).
 
