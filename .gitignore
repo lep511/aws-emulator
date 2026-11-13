@@ -27,3 +27,4 @@ __pycache__/
 # Only the transient artifacts are ignored, never the whole `.emulator/` dir:
 # `.emulator/scaffolded-specs.json` is a TRACKED record that must stay committed.
 .emulator/*.log
+/dist/
